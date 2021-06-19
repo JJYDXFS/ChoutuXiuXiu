@@ -16,11 +16,12 @@ app = Flask(__name__,static_url_path='/static/',template_folder='templates')
 app.config['CORS_HEADERS'] = 'Content-Type'
 CORS(app, resources={r"/*": {"origins": "*"}})
 
-base_dir = r"C:\\Users\\JOYCE\Desktop\\face_re\\public"
+# base_dir = r"C:\\Users\\JOYCE\Desktop\\face_re\\public"
+base_dir = r"F:\\OneDrive\\Documents\\ThirdYear\\MediaDataAnalysis\\MeidaBigData\\public"
 dbSize = 6
 
-@app.route('/api/post_unknown_img', methods=['POST'])
-def post_unknown_img():
+@app.route('/api/get_face_loaction', methods=['POST'])
+def get_face_loaction():
     '''
     接收用户上传图片，并保存到指定路径
     '''
@@ -34,6 +35,23 @@ def post_unknown_img():
     imgData.save(file_path)
     # 识别
     result = detect_2()
+    return make_response(result)
+
+@app.route('/api/get_face_recognition', methods=['POST'])
+def get_face_recognition():
+    '''
+    接收用户上传图片，并保存到指定路径
+    '''
+    imgData = request.files['file']
+
+    path = base_dir + r'\\posts\\'
+
+    imgName = "unknown.jpg"
+    file_path = path + imgName
+    # # 保存图片
+    imgData.save(file_path)
+    # 识别
+    result = detect_1()
     return make_response(result)
 
 @app.route('/api/get_img_path',methods=['GET'])

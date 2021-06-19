@@ -1,33 +1,38 @@
 <template>
-  <div class="left">
-    <h1>{{ msg }}</h1>
-    <el-upload
-      class="upload-demo"
-      drag
-      :headers = "headers"
-      :action = "action"
-      :on-success = "Success"
-      :on-error = "Error"
-      list-type = "picture"
-      limit = 1
-    >
-      <i class="el-icon-upload"></i>
-      <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-      <template #tip>
-        <div class="el-upload__tip">
-          只能上传 jpg 文件，且不超过 50KB
-        </div>
-      </template>
-    </el-upload>
+  <h1>{{ msg }}</h1>
+  <div id="container">
+    <el-row :gutter="12" style="margin-left:8%">
+    <el-col :span="4"><div class="grid-content bg-purple"><img src="face_db/1.jpg"></div></el-col>
+    <el-col :span="4"><div class="grid-content bg-purple"><img src="face_db/2.jpg"></div></el-col>
+    <el-col :span="4"><div class="grid-content bg-purple"><img src="face_db/3.jpg"></div></el-col>
+    <el-col :span="4"><div class="grid-content bg-purple"><img src="face_db/4.jpg"></div></el-col>
+    <el-col :span="4"><div class="grid-content bg-purple"><img src="face_db/5.jpg"></div></el-col>
+    </el-row>
   </div>
-  <div class="right">
-    <h1>定位结果</h1>
-    <ul v-for="i in resultList">
-    <li>
-      <img :src="i"/>
-    </li>
-    </ul>
-  </div>
+  <el-upload
+    class="upload-demo"
+    drag
+    :headers = "headers"
+    :action = "action"
+    :on-success = "Success"
+    :on-error = "Error"
+    list-type = "picture"
+    limit = 1
+  >
+    <i class="el-icon-upload"></i>
+    <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+    <template #tip>
+      <div class="el-upload__tip">
+        只能上传 jpg 文件，且不超过 50KB
+      </div>
+    </template>
+  </el-upload>
+  <h1>匹配结果</h1>
+  <ul v-for="i in resultList">
+	<li>
+		<img :src="i"/>
+	</li>
+  </ul>
 </template>
 
 <script>
@@ -42,7 +47,7 @@ export default {
       headers:{
         'Access-Control-Allow-Origin': '*',
       },
-      action:"http://localhost:5000/api/post_unknown_img",
+      action:"http://localhost:5000/api/get_face_recognition",
       resultList:[]
     };
   },
@@ -92,12 +97,4 @@ ul{
     padding: 10px 0;
     background-color: #f9fafc00;
 }
-  .left{
-    float: left;
-    width: 50%;
-  }
-  .right {
-    float: left;
-    width: 40%;
-  }
 </style>
