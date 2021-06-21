@@ -58,10 +58,13 @@ export default {
       selected: 'mxm',
       options: [
         { text: '暖暖毛线帽', value: 'mxm' },
-        { text: '闪闪财神帽', value: 'csm' },
-        { text: '搞怪小丑帽', value: 'xcm' }
+        { text: '闪闪财神帽', value: 'fcm' },
+        { text: '搞怪小丑帽', value: 'xcm' },
+        { text: '复古贝雷帽', value: 'blm' },
+        { text: '美味厨师帽', value: 'csm' },
+        { text: '西域牛仔帽', value: 'nzm' },
+        { text: '毕业学士帽', value: 'xsm' }
         ],
-    //   type: {'type' : 'mxm' },
     };
   },
   methods: {
@@ -122,17 +125,17 @@ ul{
 }
 
 .select-body{
-    background-color: #3c80b8;
+    background-color: #49a0e785;
     border: none;
-    color: white;
-    padding: 15px 32px;
+    color: rgb(0, 0, 0);
+    padding: 10px 32px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
     font-size: 18px;
     margin: 4px 2px;
     cursor: pointer;
-    margin-bottom: 20%;
+    margin-bottom: 35%;
 }
 
 .upload{

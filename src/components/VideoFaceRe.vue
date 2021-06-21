@@ -1,5 +1,5 @@
 <template>
-  <div class="left">
+  <div>
     <el-upload
       class="upload-demo"
       drag
@@ -19,13 +19,9 @@
       </template>
     </el-upload>
   </div>
-  <div class="right">
+  <div>
     <h1>识别结果</h1>
-    <ul v-for="i in resultList">
-    <li>
-      <img :src="gen_img_url(i)" v-for="i in count" style="width:20px"/>
-    </li>
-    </ul>
+      <img :src="gen_img_url(i)" v-for="i in count" style="width:100%"/>
   </div>
 </template>
 
@@ -50,7 +46,9 @@ export default defineComponent({
     methods:{
         Success(res, file, fileList){
             // console.log(res);
-            this.resultList = res['result_list'] ;
+            // this.resultList = res['result_list'] ;
+            this.img_path = res['img_path'];
+            this.count = res['count']
         },
         Error(err, file, fileList){
             this.resultList = [];

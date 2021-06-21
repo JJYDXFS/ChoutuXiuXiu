@@ -13,14 +13,7 @@ def myWearHat(base_dir, file_path,timestamp,hatType):
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)  # 转换灰色
     color = (0, 255, 0)  # 定义绘制颜色
 
-    hat_path = ""
-
-    if hatType=="mxm":
-        hat_path = base_dir+'\\hat_raw\\mxm.jpg'
-    if hatType=="csm":
-        hat_path = base_dir+'\\hat_raw\\csm.jpg'
-    if hatType=="xcm":
-        hat_path = base_dir+'\\hat_raw\\xcm.jpg'
+    hat_path = base_dir+'\\hat_raw\\{}.jpg'.format(hatType)
 
     imgCompose = cv2.imread(hat_path)
     if len(faceRects):

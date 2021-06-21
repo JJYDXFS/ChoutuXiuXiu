@@ -50,10 +50,6 @@ def video_face_re():
     '''
     视频切帧服务
     '''
-    # movie_path=request.args.get('movie_path')
-    # movie_path=movie_path.replace('\\','/')
-    # print(movie_path)
-
     file_path, timestamp = save_video_to_server(request.files['file'])
     # 视频处理
     result = myVideoFaceRe(base_dir, file_path, timestamp)

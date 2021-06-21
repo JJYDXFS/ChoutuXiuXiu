@@ -69,4 +69,4 @@ def myVideoFaceRe(base_dir,file_path,timestamp):
             myFaceRe(base_dir,imgNext,count,0,save_path)
         img=imgNext
     
-    return json.dumps({'path':"\\results\\"+timestamp,'count':count},ensure_ascii=False)
+    return json.dumps({'img_path':"\\results\\"+timestamp+"\\image",'count':count+1},ensure_ascii=False)
