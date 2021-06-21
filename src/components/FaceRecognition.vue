@@ -1,14 +1,5 @@
 <template>
-  <h1>{{ msg }}</h1>
-  <div id="container">
-    <el-row :gutter="12" style="margin-left:8%">
-    <el-col :span="4"><div class="grid-content bg-purple"><img src="face_db/1.jpg"></div></el-col>
-    <el-col :span="4"><div class="grid-content bg-purple"><img src="face_db/2.jpg"></div></el-col>
-    <el-col :span="4"><div class="grid-content bg-purple"><img src="face_db/3.jpg"></div></el-col>
-    <el-col :span="4"><div class="grid-content bg-purple"><img src="face_db/4.jpg"></div></el-col>
-    <el-col :span="4"><div class="grid-content bg-purple"><img src="face_db/5.jpg"></div></el-col>
-    </el-row>
-  </div>
+  <div class="left">
   <el-upload
     class="upload-demo"
     drag
@@ -23,16 +14,19 @@
     <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
     <template #tip>
       <div class="el-upload__tip">
-        只能上传 jpg 文件，且不超过 50KB
+        只能上传 jpg 文件，且不超过 500KB
       </div>
     </template>
   </el-upload>
-  <h1>匹配结果</h1>
-  <ul v-for="i in resultList">
-	<li>
-		<img :src="i"/>
-	</li>
-  </ul>
+  </div>
+  <div class="right">
+    <h1>匹配结果</h1>
+    <ul v-for="i in resultList">
+    <li>
+      <img :src="i" style="width:45%"/>
+    </li>
+    </ul>
+  </div>
 </template>
 
 <script>
@@ -70,13 +64,6 @@ export default {
 ul{
   list-style: none;
 }
-
-.el-row {
-  margin-bottom: 20px;
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
   .el-col {
     border-radius: 4px;
   }
@@ -97,4 +84,12 @@ ul{
     padding: 10px 0;
     background-color: #f9fafc00;
 }
+  .left{
+    float: left;
+    width: 50%;
+  }
+  .right {
+    float: left;
+    width: 40%;
+  }
 </style>

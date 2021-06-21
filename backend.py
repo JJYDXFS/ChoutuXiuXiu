@@ -23,117 +23,165 @@ dbSize = 6
 @app.route('/api/get_face_loaction', methods=['POST'])
 def get_face_loaction():
     '''
-    接收用户上传图片，并保存到指定路径
+    人脸定位服务
     '''
+    # file_path, timestamp = save_img_to_server(request.files['file'])
     imgData = request.files['file']
-
-    path = base_dir + r'\\posts\\'
-
-    imgName = "unknown.jpg"
-    file_path = path + imgName
-    # # 保存图片
-    imgData.save(file_path)
+    file_path, timestamp = save_img_to_server(request.files['file']) # 存图
     # 识别
-    result = detect_2()
+    result = myFaceLoc(file_path, timestamp)
     return make_response(result)
 
 @app.route('/api/get_face_recognition', methods=['POST'])
 def get_face_recognition():
     '''
-    接收用户上传图片，并保存到指定路径
+    人脸匹配服务
     '''
     imgData = request.files['file']
 
     path = base_dir + r'\\posts\\'
 
-    imgName = "unknown.jpg"
+    timestamp = str(int(round(time.time() * 1000)))
+    imgName = "unknown_"+timestamp+".jpg"
     file_path = path + imgName
     # # 保存图片
     imgData.save(file_path)
     # 识别
-    result = detect_1()
+    result = myFaceRe(timestamp)
     return make_response(result)
 
 @app.route('/api/get_img_path',methods=['GET'])
 def get_img_path():
+    '''
+    视频切帧服务
+    '''
     movie_path=request.args.get('movie_path')
     movie_path=movie_path.replace('\\','/')
     print(movie_path)
     
     return cut_movie(movie_path)
 
+@app.route('/api/wear_hat', methods = ['POST'])
+def wear_hat():
+    '''
+    人像戴帽子服务
+    '''
+    hatType = request.form['type'] # 得到帽子类型
+    print(hatType)
+    file_path, timestamp = save_img_to_server(request.files['file']) # 存图
+
+    # 识别
+    result = myWearHat(file_path, timestamp, hatType)
+    return make_response(result)
+
 # 主页
 @app.route('/')
 def index():
     return "Hi"
 
-def detect_1():
+def myFaceLoc(img_path, timestamp):
     '''
-    未知人脸与数据库匹配
+    人脸定位
     '''
-    #显示已知图片
-    known_encoding=[]
+    image = cv2.imread(img_path)
 
-    img_path = base_dir + "\\face_db\\"
+    face_locations_noCNN=face_recognition.face_locations(image)
+    face_num2=len(face_locations_noCNN)
 
-    for i in range(1,dbSize,1):
-        known_encoding.append(face_recognition.face_encodings(face_recognition.load_image_file(img_path+str(i)+".jpg"))[0])
+    for i in range(0,face_num2):
+        top = face_locations_noCNN[i][0]
+        right = face_locations_noCNN[i][1]
+        bottom = face_locations_noCNN[i][2]
+        left = face_locations_noCNN[i][3]
 
-    unknown_image = face_recognition.load_image_file(base_dir+"\\posts\\unknown.jpg")
+        start = (left, top)
+        end = (right, bottom)
 
-    unknown_encoding = face_recognition.face_encodings(unknown_image)[0]
-
-    results = face_recognition.compare_faces(known_encoding,
-                                            unknown_encoding,
-                                            tolerance=0.6)
-    result_list = []
-    for i in range(dbSize-1):
-        if results[i]==True:
-            result_dir = 'face_db/'+str(i+1)+".jpg"
-            result_list.append(result_dir)
+        color = (0,255,255)
+        thickness = 2
+        cv2.rectangle(image, start, end, color, thickness)
     
-    return json.dumps({'result_list':result_list},ensure_ascii=False)
-    
-def detect_2():
+    outname=base_dir+"\\results\\face_"+timestamp+".jpg"
+    cv2.imwrite(outname,image)
+
+    return json.dumps({'result_list':['results\\face_'+timestamp+'.jpg']},ensure_ascii=False)
+
+# 辅助函数
+# ----------------------------------------------------------------------------------------------------
+def save_img_to_server(imgData):
     '''
-    人脸检测
+    将图像保存到服务器，并返回保存路径
     '''
-    face_cascade = cv2.CascadeClassifier("G:\\Python\\Python37\\Lib\\site-packages\\cv2\\data\\haarcascade_frontalface_default.xml")
+    path = base_dir + r'\\posts\\'
 
-    filename = base_dir+"\\posts\\unknown.jpg"
+    timestamp = str(int(round(time.time() * 1000)))
+    imgName = "post_"+timestamp+".jpg"
 
-    img = cv2.imread(filename)
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    file_path = path + imgName
+    # 保存图片
+    imgData.save(file_path)
 
-    faces = face_cascade.detectMultiScale(gray, 1.3, 5)
+    return (file_path, timestamp)
 
-    for (x, y, w, h) in faces:
-        img = cv2.rectangle(img, (x, y), (x + w, y + h), (255, 0, 0), 2)
-    outname=base_dir+"\\face.jpg"
+
+# 处理函数
+# ---------------------------------------------------------------------------------
+def myWearHat(file_path,timestamp,hatType):
+    '''
+    给人像戴上选中的帽子
+    https://github.com/vipstone/faceai/blob/master/doc/compose.md
+    '''
+
+    img = cv2.imread(file_path)
+    faceRects=face_recognition.face_locations(img)
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)  # 转换灰色
+    color = (0, 255, 0)  # 定义绘制颜色
+
+    hat_path = ""
+
+    if hatType=="mxm":
+        hat_path = base_dir+'\\hat_raw\\mxm.jpg'
+    if hatType=="csm":
+        hat_path = base_dir+'\\hat_raw\\csm.jpg'
+    if hatType=="xcm":
+        hat_path = base_dir+'\\hat_raw\\xcm.jpg'
+
+    imgCompose = cv2.imread(hat_path)
+    if len(faceRects):
+        for faceRect in faceRects:
+            top, right, bottom, left = faceRect
+            x, y ,w, h = left, top ,abs(top-bottom), abs(right-left)
+            sp = imgCompose.shape
+            imgComposeSizeH = int(sp[0]/sp[1]*w)
+            if imgComposeSizeH>(y-50):
+                imgComposeSizeH=(y-50)
+            imgComposeSize = cv2.resize(imgCompose,(w, imgComposeSizeH), interpolation=cv2.INTER_NEAREST)
+            top = (y-imgComposeSizeH-50)
+            if top<=0:
+                top=0
+            rows, cols, channels = imgComposeSize.shape
+            roi = img[top:top+rows,x:x+cols]
+
+            # Now create a mask of logo and create its inverse mask also
+            img2gray = cv2.cvtColor(imgComposeSize, cv2.COLOR_RGB2GRAY)
+            ret, mask = cv2.threshold(img2gray, 10, 255, cv2.THRESH_BINARY) 
+            mask_inv = cv2.bitwise_not(mask)
+
+            # Now black-out the area of logo in ROI
+            img1_bg = cv2.bitwise_and(roi, roi, mask=mask_inv)
+
+            # Take only region of logo from logo image.
+            img2_fg = cv2.bitwise_and(imgComposeSize, imgComposeSize, mask=mask)
+
+            # Put logo in ROI and modify the main image
+            dst = cv2.add(img1_bg, img2_fg)
+            img[top:top+rows, x:x+cols] = dst
+
+    outname = base_dir+"\\results\\hat_"+timestamp+".jpg"
     cv2.imwrite(outname,img)
-    return json.dumps({'result_list':['face.jpg']},ensure_ascii=False)
-    
 
-def cut_movie(movie_path):
-    os.chdir('C:\\Users\\JOYCE\\Desktop')
-    image_save='/pic'
-    # shutil.rmtree('F:\\flask\\face_re\\public\\pic')
-    if not os.path.exists("C:\\Users\\JOYCE\Desktop\\face_re\\public\\pic"):
-        os.mkdir('C:\\Users\\JOYCE\Desktop\\face_re\\public\\pic')
-
-    cap=cv2.VideoCapture(movie_path)
-    frame_count=int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
-
-    for i in range(int(frame_count)):
-        _,img=cap.read()
-        img=cv2.cvtColor(img,cv2.cv2.COLOR_RGB2HSV)   #cv2.COLOR_RGB2HSV     cv2.COLOR_BGR2GRAY
-        # img = cv2.GaussianBlur(img, (3, 3), 0)
-        # img = cv2.Canny(img, 30, 100)
-        cv2.imwrite('C:\\Users\\JOYCE\Desktop\\face_re\\public\\pic\\image{}.jpg'.format(i),img)
-
-
-    return json.dumps({'path':image_save+'/image','count':frame_count},ensure_ascii=False)
+    return json.dumps({'result_list':['results\\hat_'+timestamp+'.jpg']},ensure_ascii=False)
 
 if __name__ == '__main__':
     app.debug=True
-    app.run('127.0.0.1', 5000)
+    app.run('0.0.0.0', 5000)

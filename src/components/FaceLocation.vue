@@ -1,6 +1,6 @@
 <template>
   <div class="left">
-    <h1>{{ msg }}</h1>
+    <!-- <h1>{{ msg }}</h1> -->
     <el-upload
       class="upload-demo"
       drag
@@ -15,7 +15,7 @@
       <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
       <template #tip>
         <div class="el-upload__tip">
-          只能上传 jpg 文件，且不超过 50KB
+          只能上传 jpg 文件，且不超过 500KB
         </div>
       </template>
     </el-upload>
@@ -24,7 +24,7 @@
     <h1>定位结果</h1>
     <ul v-for="i in resultList">
     <li>
-      <img :src="i"/>
+      <img :src="i" style="width:45%"/>
     </li>
     </ul>
   </div>
@@ -33,7 +33,7 @@
 <script>
 
 export default {
-  name: 'FaceRecognition',
+  name: 'FaceLocation',
   props: {
     msg: String
   },
@@ -64,13 +64,6 @@ export default {
 
 ul{
   list-style: none;
-}
-
-.el-row {
-  margin-bottom: 20px;
-  &:last-child {
-    margin-bottom: 0;
-  }
 }
   .el-col {
     border-radius: 4px;

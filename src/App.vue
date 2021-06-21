@@ -5,7 +5,7 @@
       <router-view />
     </el-main>
     <el-footer>
-      <!-- <base-footer /> -->
+      
     </el-footer>
   </el-container>
 </template>

@@ -15,7 +15,7 @@ export default defineComponent({
     data() {
         return {
             img_path:"",
-            movie_path:"",
+            video_path:"",
             count:0,
         };
     },
@@ -24,9 +24,9 @@ export default defineComponent({
     },
     methods:{
         get_img_path(){
-            this.movie_path = document.getElementById("input-box").value;
+            this.video_path = document.getElementById("input-box").value;
             // 192.168.0.100
-            axios.get("http://localhost:5000/api/get_img_path",{ params:{ movie_path:this.movie_path} }).then((res) => {
+            axios.get("http://localhost:5000/api/get_video_process",{ params:{ video_path:this.video_path} }).then((res) => {
                 // console.log(res['data']['count']);
                 this.count = res['data']['count'];
                 this.img_path = res['data']['path'];

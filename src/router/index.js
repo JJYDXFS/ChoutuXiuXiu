@@ -3,7 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 const routes = [
   {
     path: '/',
-    component: () => import('../App.vue'),
+    component: () => import('../pages/index.vue'),
     meta: {
       title: 'Index'
     }
@@ -27,6 +27,20 @@ const routes = [
     component: () => import('../components/FaceLocation.vue'),
     meta: {
         title: 'FaceLocation'
+    }
+  },
+  {
+    path: '/WearHat',
+    component: () => import('../components/WearHat.vue'),
+    meta: {
+        title: 'WearHat'
+    }
+  },
+  {
+    path: '/Makeup',
+    component: () => import('../components/Makeup.vue'),
+    meta: {
+        title: 'Makeup'
     }
   }
 ]

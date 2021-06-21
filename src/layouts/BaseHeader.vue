@@ -21,20 +21,24 @@ export default defineComponent({
       activeIndex: "1",
       navItems: [
         {
-          name: "🏠",
+          name: "首页",
           index: "/",
-        },
-        {
-          name: "视频处理",
-          index: "/MediaProcess",
         },
         {
           name: "人脸定位",
           index: "/FaceLocation",
         },
         {
-          name: "人脸识别",
+          name: "单人匹配",
           index: "/FaceRecognition",
+        },
+        {
+          name: "视频人脸识别",
+          index: "/MediaProcess",
+        },
+        {
+          name: "自选帽子",
+          index: "/WearHat",
         },
       ],
     };
