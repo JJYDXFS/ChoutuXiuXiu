@@ -9,10 +9,10 @@ const routes = [
     }
   },
   {
-    path: '/MediaProcess',
-    component: () => import('../components/MediaProcess.vue'),
+    path: '/VideoFaceRe',
+    component: () => import('../components/VideoFaceRe.vue'),
     meta: {
-      title: 'MediaProcess'
+      title: 'VideoFaceRe'
     }
   },
   {

@@ -36,7 +36,7 @@
     <h1>结果</h1>
     <ul v-for="i in resultList">
     <li>
-      <img :src="i" style="width:45%"/>
+      <img :src="i" style="width:55%"/>
     </li>
     </ul>
   </div>

@@ -1,6 +1,5 @@
 <template>
   <div class="left">
-    <!-- <h1>{{ msg }}</h1> -->
     <el-upload
       class="upload-demo"
       drag
@@ -24,7 +23,7 @@
     <h1>定位结果</h1>
     <ul v-for="i in resultList">
     <li>
-      <img :src="i" style="width:45%"/>
+      <img :src="i" style="width:60%"/>
     </li>
     </ul>
   </div>

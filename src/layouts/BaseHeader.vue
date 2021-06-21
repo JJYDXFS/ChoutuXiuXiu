@@ -29,12 +29,12 @@ export default defineComponent({
           index: "/FaceLocation",
         },
         {
-          name: "单人匹配",
+          name: "人脸匹配",
           index: "/FaceRecognition",
         },
         {
           name: "视频人脸识别",
-          index: "/MediaProcess",
+          index: "/VideoFaceRe",
         },
         {
           name: "自选帽子",
