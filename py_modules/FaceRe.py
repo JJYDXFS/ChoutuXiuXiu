@@ -7,7 +7,7 @@ def myFaceRe(BASE_DIR, imageData, index, timestamp, save_path):
     '''
     人脸识别模块
     @refer
-    
+    https://github.com/ageitgey/face_recognition/blob/master/examples/facerec_from_webcam_faster.py
 
     @param
     BASE_DIR: 服务器存储文件全局路径

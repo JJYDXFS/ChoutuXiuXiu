@@ -7,6 +7,7 @@
       :action = "action"
       :on-success = "Success"
       :on-error = "Error"
+      :on-progress = "Progress"
       list-type = "picture"
       limit = 1
     >
@@ -20,7 +21,7 @@
     </el-upload>
   </div>
   <div>
-    <h1>识别结果</h1>
+    <h1>{{status}}</h1>
       <img :src="gen_img_url(i)" v-for="i in count" style="width:100%"/>
   </div>
 </template>
@@ -38,6 +39,7 @@ export default defineComponent({
             action:"http://localhost:5000/api/video_face_re",
             img_path:"",
             count:0,
+            status:"等待识别"
         };
     },
     mounted () {
@@ -49,10 +51,15 @@ export default defineComponent({
             // this.resultList = res['result_list'] ;
             this.img_path = res['img_path'];
             this.count = res['count']
+            this.status = "识别成功"
         },
         Error(err, file, fileList){
             this.resultList = [];
             alert("识别失败！");
+            this.status = "识别失败";
+        },
+        Progress(event, file, fileList){
+            this.status = "识别中...";
         },
         gen_img_url(index){
             // console.log(index);

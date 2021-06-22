@@ -59,12 +59,23 @@ def wear_hat():
     人像戴帽子服务
     '''
     hatType = request.form['type'] # 得到帽子类型
-    print(hatType)
     file_path, timestamp = save_img_to_server(request.files['file']) # 存图
 
     # 识别
     result = myWearHat(BASE_DIR, file_path, timestamp, hatType)
     return make_response(result)
+
+@app.route('/api/change_face', methods = ['POST'])
+def change_face():
+    '''
+    换脸服务
+    '''
+    # file_path, timestamp = save_img_to_server(request.files['file']) # 存图
+
+
+    # 识别
+    # result = myWearHat(BASE_DIR, file_path, timestamp, hatType)
+    # return make_response(result)
 
 # 主页
 @app.route('/')

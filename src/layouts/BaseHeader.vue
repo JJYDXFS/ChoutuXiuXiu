@@ -40,6 +40,10 @@ export default defineComponent({
           name: "人工智障戴帽子",
           index: "/WearHat",
         },
+        {
+          name: "换脸游戏",
+          index: "/ChangeFace",
+        },
       ],
     };
   },

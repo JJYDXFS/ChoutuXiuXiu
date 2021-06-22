@@ -37,6 +37,13 @@ const routes = [
     }
   },
   {
+    path: '/ChangeFace',
+    component: () => import('../components/ChangeFace.vue'),
+    meta: {
+        title: 'ChangeFace'
+    }
+  },
+  {
     path: '/Makeup',
     component: () => import('../components/Makeup.vue'),
     meta: {
