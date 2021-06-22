@@ -41,7 +41,7 @@ export default defineComponent({
           index: "/WearHat",
         },
         {
-          name: "换脸游戏",
+          name: "阴间换脸游戏",
           index: "/ChangeFace",
         },
       ],
@@ -49,7 +49,7 @@ export default defineComponent({
   },
   methods: {
     handleSelect(key, keyPath) {
-      console.log(key, keyPath);
+      // console.log(key, keyPath);
     },
   },
 });

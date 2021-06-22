@@ -28,7 +28,6 @@
 
 <script>
 import { defineComponent } from 'vue'
-import axios from 'axios'
 
 export default defineComponent({
     data() {
@@ -39,7 +38,7 @@ export default defineComponent({
             action:"http://localhost:5000/api/video_face_re",
             img_path:"",
             count:0,
-            status:"等待识别"
+            status: "等待识别"
         };
     },
     mounted () {
@@ -47,11 +46,9 @@ export default defineComponent({
     },
     methods:{
         Success(res, file, fileList){
-            // console.log(res);
-            // this.resultList = res['result_list'] ;
             this.img_path = res['img_path'];
-            this.count = res['count']
-            this.status = "识别成功"
+            this.count = res['count'];
+            this.status = "识别成功";
         },
         Error(err, file, fileList){
             this.resultList = [];
@@ -59,12 +56,9 @@ export default defineComponent({
             this.status = "识别失败";
         },
         Progress(event, file, fileList){
-            this.status = "识别中...";
+            this.status = "识别中...请耐心等待";
         },
         gen_img_url(index){
-            // console.log(index);
-            // console.log(this.img_path+(index-1).toString()+".jpg");
-            // return require(this.img_path+(index-1).toString()+".jpg");
             return this.img_path+(index-1).toString()+".jpg"
         },
     }

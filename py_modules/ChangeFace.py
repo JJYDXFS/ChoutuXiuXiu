@@ -173,8 +173,3 @@ def changeFaceMain(image_save,face1_path,face2_path):
     cv2.imwrite(image_save,img_newWant)
 
     return image_save
-
-# if __name__=="__main__":
-#     BASE_DIR = r"F:\\OneDrive\\Documents\\ThirdYear\\MediaDataAnalysis\\MeidaBigData\\public"
-#     timestamp = "123456789"
-#     myChangeFace(BASE_DIR,timestamp)

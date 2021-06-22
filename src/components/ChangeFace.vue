@@ -4,6 +4,7 @@
   :action="action"
   :on-success = "Success"
   :on-error = "Error"
+  :on-progress = "Progress"
   list-type="picture-card"
   :auto-upload="false"
   limit = 2
@@ -15,7 +16,7 @@
     <template #file="{file}">
       <div>
         <img class="el-upload-list__item-thumbnail" :src="file.url" alt="" />
-        <!-- <span class="el-upload-list__item-actions">
+        <span class="el-upload-list__item-actions">
           <span
             class="el-upload-list__item-preview"
             @click="handlePictureCardPreview(file)"
@@ -32,20 +33,20 @@
           <span
             v-if="!disabled"
             class="el-upload-list__item-delete"
-            @click="handleRemove(file)"
+            @click="handleRemove(file,fileList,fileIndex)"
           >
             <i class="el-icon-delete"></i>
           </span>
-        </span> -->
+        </span>
       </div>
     </template>
 </el-upload>
 <el-dialog v-model="dialogVisible">
-  <img width="100%" :src="dialogImageUrl" alt="">
+  <img style="width:40%" :src="dialogImageUrl" alt="">
 </el-dialog>
 <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">点击换脸</el-button>
 <div>
-    <h1>换脸结果</h1>
+    <h1>{{status}}</h1>
     <ul v-for="i in resultList">
     <li>
       <img :src="i" style="width:60%"/>
@@ -55,7 +56,9 @@
 </template>
 
 <script>
-  export default {
+import { defineComponent } from 'vue'
+
+export default defineComponent({
     data() {
       return {
         headers:{
@@ -65,7 +68,8 @@
         dialogImageUrl: '',
         dialogVisible: false,
         disabled: false,
-        resultList: []
+        resultList: [],
+        status: "等待换脸"
       };
     },
     methods: {
@@ -78,23 +82,43 @@
         }
       },
       Success(res, file, fileList){
-        // console.log(res);
-        this.resultList = res['result_list'] ;
+        this.resultList = res['result_list'];
+        this.status = "换脸成功";
       },
       Error(err, file, fileList){
         this.resultList = [];
-        alert("识别失败！");
+        alert("换脸失败！");
+        this.status = "换脸失败";
+      },
+      Progress(event, file, fileList){
+        this.status = "换脸中...请耐心等待";
       },
       handleRemove(file) {
-        console.log(file);
+        // 根据值删除数组指定元素
+        // https://www.jb51.net/article/134312.htm
+        Array.prototype.remove = function(val) { 
+            let index = this.indexOf(val); 
+            if (index > -1) { 
+              this.splice(index, 1); 
+            } 
+        };
+
+        this.$refs.upload.uploadFiles.remove(file);
       },
       handlePictureCardPreview(file) {
         this.dialogImageUrl = file.url;
         this.dialogVisible = true;
       },
       handleDownload(file) {
-        console.log(file);
+        // 点击下载图片
+        // https://www.cnblogs.com/chao202426/p/11403713.html
+        let url = file.url;                            // 获取图片地址
+        let a = document.createElement('a');          // 创建一个a节点插入的document
+        let event = new MouseEvent('click')           // 模拟鼠标click点击事件
+        a.download = file.name                 // 设置a节点的download属性值
+        a.href = url;                                 // 将图片的src赋值给a节点的href
+        a.dispatchEvent(event)                        // 触发鼠标点击事件
       }
     }
-  }
+})
 </script>
