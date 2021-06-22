@@ -14,6 +14,7 @@ from py_modules.WearHat import myWearHat
 from py_modules.FaceLoc import myFaceLoc
 from py_modules.FaceRe import myFaceRe
 from py_modules.VideoFaceRe import myVideoFaceRe
+from py_modules.ChangeFace import myChangeFace
 
 app = Flask(__name__,static_url_path='/static/',template_folder='templates')
 app.config['CORS_HEADERS'] = 'Content-Type'
@@ -22,6 +23,9 @@ app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024 # 16MB
 
 # 对应服务器存储文件路径
 BASE_DIR = r"F:\\OneDrive\\Documents\\ThirdYear\\MediaDataAnalysis\\MeidaBigData\\public"
+# 控制换脸照片的文件名
+CHANGE_FACE_COUNT = True
+IMAGE_COUNT = 0
 
 @app.route('/api/get_face_loaction', methods=['POST'])
 def get_face_loaction():
@@ -70,12 +74,32 @@ def change_face():
     '''
     换脸服务
     '''
-    # file_path, timestamp = save_img_to_server(request.files['file']) # 存图
+    global CHANGE_FACE_COUNT
+    global IMAGE_COUNT
 
+    #print("第"+str(IMAGE_COUNT)+"张图")
 
-    # 识别
-    # result = myWearHat(BASE_DIR, file_path, timestamp, hatType)
-    # return make_response(result)
+    #IMAGE_COUNT=IMAGE_COUNT+1
+
+    path = BASE_DIR + r'\\posts\\changeface\\'
+    # imgName = str(IMAGE_COUNT)+".jpg"
+
+    # IMAGE_COUNT=IMAGE_COUNT+1
+    imgName = ("image0" if CHANGE_FACE_COUNT else "image1")+".jpg"
+    request.files['file'].save(path + imgName)
+
+    # print("存了一个图")
+
+    CHANGE_FACE_COUNT = not CHANGE_FACE_COUNT
+
+    # print(CHANGE_FACE_COUNT)
+
+    if CHANGE_FACE_COUNT:
+        timestamp = str(int(round(time.time() * 1000)))
+        result = myChangeFace(BASE_DIR,timestamp)
+        return make_response(result)
+    else:
+        return make_response(json.dumps({'result_list':[]},ensure_ascii=False))
 
 # 主页
 @app.route('/')

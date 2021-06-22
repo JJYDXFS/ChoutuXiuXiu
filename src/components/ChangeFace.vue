@@ -44,6 +44,14 @@
   <img width="100%" :src="dialogImageUrl" alt="">
 </el-dialog>
 <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">点击换脸</el-button>
+<div>
+    <h1>换脸结果</h1>
+    <ul v-for="i in resultList">
+    <li>
+      <img :src="i" style="width:60%"/>
+    </li>
+    </ul>
+  </div>
 </template>
 
 <script>
@@ -53,10 +61,11 @@
         headers:{
           'Access-Control-Allow-Origin': '*',
         },
-        action:"http://localhost:5000/api//api/change_face",
+        action:"http://localhost:5000/api/change_face",
         dialogImageUrl: '',
         dialogVisible: false,
         disabled: false,
+        resultList: []
       };
     },
     methods: {
