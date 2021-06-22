@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-import face_recognition
+# import face_recognition
 import os
 import json
 
@@ -36,15 +36,22 @@ def calculate(image1, image2):
     
     return degree
 
-def myVideoFaceRe(base_dir,file_path,timestamp):
+def myVideoFaceRe(BASE_DIR,file_path,timestamp):
     '''
-    接收视频路径，返回关键帧+识别结果
+    视频人脸识别模块
+    @param
+    BASE_DIR: 服务器存储文件全局路径
+    file_path: 待检测的视频路径
+    timestamp: 时间戳，用于视频目录命名
+
+    @return
+    返回视频关键帧处理结果目录相对前端的路径
     '''
     v_path = file_path
     cap = cv2.VideoCapture(v_path)
     frame_count = cap.get(cv2.CAP_PROP_FRAME_COUNT)
     # 定义关键帧保存路径
-    save_path = base_dir+"\\results\\"+timestamp
+    save_path = BASE_DIR+"\\results\\"+timestamp
     os.mkdir(save_path)
     # 初始化计数器
     count = 0
@@ -53,7 +60,7 @@ def myVideoFaceRe(base_dir,file_path,timestamp):
         _,imgNext=cap.read()
         
         if i == 0: # 第一帧直接保存
-            myFaceRe(base_dir,imgNext,count,0,save_path)
+            myFaceRe(BASE_DIR,imgNext,count,0,save_path)
             img=imgNext
             continue
         # 从第二帧开始比较
@@ -66,7 +73,7 @@ def myVideoFaceRe(base_dir,file_path,timestamp):
         
         if float(n[0])<0.7:
             count=count+1
-            myFaceRe(base_dir,imgNext,count,0,save_path)
+            myFaceRe(BASE_DIR,imgNext,count,0,save_path)
         img=imgNext
     
     return json.dumps({'img_path':"\\results\\"+timestamp+"\\image",'count':count+1},ensure_ascii=False)

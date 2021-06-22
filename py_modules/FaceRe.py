@@ -1,15 +1,24 @@
-from time import time
 import cv2
 import face_recognition
 import numpy as np
 import json
-import os
 
-def myFaceRe(base_dir, imageData, index, timestamp, save_path):
+def myFaceRe(BASE_DIR, imageData, index, timestamp, save_path):
     '''
-    人脸识别并保存识别结果
-    index=-1时表明是普通检测，按timestamp保存图片
-    否则，按index保存图片
+    人脸识别模块
+    @refer
+    
+
+    @param
+    BASE_DIR: 服务器存储文件全局路径
+    imageData: 图像数据，单图检测传入图片路径，视频检测传入图片数据
+    index: index=-1时对应单图检测，index为正整数时对应视频检测的图片下标
+    timestamp: 时间戳，用于定义新建目录名
+    save_path: 图片保存路径，仅在index≠-1时有效
+
+    @return
+    单图检测模式下返回图片相对前端的路径
+    视频检测模式下不返回有意义值
     '''
     if index == -1: unknown_img = cv2.imread(imageData)
     else: unknown_img = imageData
@@ -17,7 +26,7 @@ def myFaceRe(base_dir, imageData, index, timestamp, save_path):
     face_encodings = face_recognition.face_encodings(unknown_img, face_locations)
     # 导入人脸数据
     name_list = ['Queen Elizabeth II','Prince Charles','Princess Anne','Princess Diana','Lady Thatcher','Earl of Snowdon','Princess Margaret','Harold Wilson','Duke of Edinburgh','IU','song wei']
-    known_face_encodings = np.load(base_dir+'\\data\\face_encoding.npy')
+    known_face_encodings = np.load(BASE_DIR+'\\data\\face_encoding.npy')
 
     face_names = []
 
@@ -44,13 +53,10 @@ def myFaceRe(base_dir, imageData, index, timestamp, save_path):
         cv2.putText(unknown_img, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
 
     if index == -1: # 对于单张识别
-        outname = base_dir + "\\results\\face_"+timestamp+".jpg"
+        outname = BASE_DIR + "\\results\\face_"+timestamp+".jpg"
         cv2.imwrite(outname,unknown_img)
         return  json.dumps({'result_list':['results\\face_'+timestamp+'.jpg']},ensure_ascii=False)
     else: # 对于视频识别，按给定保存路径存，并命名
         outname = save_path+"\\image{}.jpg".format(index)
         cv2.imwrite(outname,unknown_img)
         return
-    
-
-    

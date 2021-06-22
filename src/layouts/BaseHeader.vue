@@ -37,7 +37,7 @@ export default defineComponent({
           index: "/VideoFaceRe",
         },
         {
-          name: "自选帽子",
+          name: "人工智障戴帽子",
           index: "/WearHat",
         },
       ],

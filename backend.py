@@ -5,8 +5,6 @@ import time
 import pymysql
 import json
 import copy
-# 人脸识别相关
-# import cv2
 
 import os
 import subprocess
@@ -20,10 +18,10 @@ from py_modules.VideoFaceRe import myVideoFaceRe
 app = Flask(__name__,static_url_path='/static/',template_folder='templates')
 app.config['CORS_HEADERS'] = 'Content-Type'
 CORS(app, resources={r"/*": {"origins": "*"}})
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024 # 16MB
 
-# base_dir = r"C:\\Users\\JOYCE\Desktop\\face_re\\public"
-base_dir = r"F:\\OneDrive\\Documents\\ThirdYear\\MediaDataAnalysis\\MeidaBigData\\public"
+# 对应服务器存储文件路径
+BASE_DIR = r"F:\\OneDrive\\Documents\\ThirdYear\\MediaDataAnalysis\\MeidaBigData\\public"
 
 @app.route('/api/get_face_loaction', methods=['POST'])
 def get_face_loaction():
@@ -32,7 +30,7 @@ def get_face_loaction():
     '''
     file_path, timestamp = save_img_to_server(request.files['file']) # 存图
     # 识别
-    result = myFaceLoc(base_dir, file_path, timestamp)
+    result = myFaceLoc(BASE_DIR, file_path, timestamp)
     return make_response(result)
 
 @app.route('/api/get_face_recognition', methods=['POST'])
@@ -42,7 +40,7 @@ def get_face_recognition():
     '''
     file_path, timestamp = save_img_to_server(request.files['file'])
     # 匹配
-    result = myFaceRe(base_dir,file_path,-1,timestamp,0)
+    result = myFaceRe(BASE_DIR,file_path,-1,timestamp,0)
     return make_response(result)
 
 @app.route('/api/video_face_re',methods=['POST'])
@@ -52,7 +50,7 @@ def video_face_re():
     '''
     file_path, timestamp = save_video_to_server(request.files['file'])
     # 视频处理
-    result = myVideoFaceRe(base_dir, file_path, timestamp)
+    result = myVideoFaceRe(BASE_DIR, file_path, timestamp)
     return make_response(result)
 
 @app.route('/api/wear_hat', methods = ['POST'])
@@ -65,7 +63,7 @@ def wear_hat():
     file_path, timestamp = save_img_to_server(request.files['file']) # 存图
 
     # 识别
-    result = myWearHat(base_dir, file_path, timestamp, hatType)
+    result = myWearHat(BASE_DIR, file_path, timestamp, hatType)
     return make_response(result)
 
 # 主页
@@ -79,7 +77,7 @@ def save_img_to_server(imgData):
     '''
     将图像保存到服务器，并返回保存路径
     '''
-    path = base_dir + r'\\posts\\'
+    path = BASE_DIR + r'\\posts\\'
 
     timestamp = str(int(round(time.time() * 1000)))
     imgName = "post_"+timestamp+".jpg"
@@ -94,7 +92,7 @@ def save_video_to_server(videoData):
     '''
     将视频保存到服务器，并返回保存路径
     '''
-    path = base_dir + r'\\posts\\video\\'
+    path = BASE_DIR + r'\\posts\\video\\'
 
     timestamp = str(int(round(time.time() * 1000)))
     videoName = "post_"+timestamp+".mp4"

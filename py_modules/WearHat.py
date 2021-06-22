@@ -2,10 +2,20 @@ import face_recognition
 import cv2
 import json
 
-def myWearHat(base_dir, file_path,timestamp,hatType):
+def myWearHat(BASE_DIR, file_path,timestamp,hat_type):
     '''
-    给人像戴上选中的帽子
+    人像戴帽子模块
+    @refer
     https://github.com/vipstone/faceai/blob/master/doc/compose.md
+    
+    @param
+    BASE_DIR: 服务器存储文件全局路径
+    file_path: 待处理的图片路径
+    timestamp: 时间戳，用于生成图片命名
+    hat_type: 帽子类型
+
+    @return
+    返回图片相对前端的路径
     '''
 
     img = cv2.imread(file_path)
@@ -13,7 +23,7 @@ def myWearHat(base_dir, file_path,timestamp,hatType):
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)  # 转换灰色
     color = (0, 255, 0)  # 定义绘制颜色
 
-    hat_path = base_dir+'\\hat_raw\\{}.jpg'.format(hatType)
+    hat_path = BASE_DIR+'\\hat_raw\\{}.jpg'.format(hat_type)
 
     imgCompose = cv2.imread(hat_path)
     if len(faceRects):
@@ -46,7 +56,7 @@ def myWearHat(base_dir, file_path,timestamp,hatType):
             dst = cv2.add(img1_bg, img2_fg)
             img[top:top+rows, x:x+cols] = dst
 
-    outname = base_dir+"\\results\\hat_"+timestamp+".jpg"
+    outname = BASE_DIR+"\\results\\hat_"+timestamp+".jpg"
     cv2.imwrite(outname,img)
 
     return json.dumps({'result_list':['results\\hat_'+timestamp+'.jpg']},ensure_ascii=False)
