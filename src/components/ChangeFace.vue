@@ -69,7 +69,8 @@ export default defineComponent({
         dialogVisible: false,
         disabled: false,
         resultList: [],
-        status: "等待换脸"
+        status: "等待换脸",
+        successCount: true,
       };
     },
     methods: {
@@ -82,8 +83,11 @@ export default defineComponent({
         }
       },
       Success(res, file, fileList){
+        this.successCount = !this.successCount
         this.resultList = res['result_list'];
-        this.status = "换脸成功";
+        if (this.successCount){
+          this.status = "换脸成功";
+        }
       },
       Error(err, file, fileList){
         this.resultList = [];
@@ -91,7 +95,7 @@ export default defineComponent({
         this.status = "换脸失败";
       },
       Progress(event, file, fileList){
-        this.status = "换脸中...请耐心等待";
+        this.status = "换脸很慢...请耐心等待";
       },
       handleRemove(file) {
         // 根据值删除数组指定元素

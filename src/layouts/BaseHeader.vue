@@ -41,8 +41,12 @@ export default defineComponent({
           index: "/WearHat",
         },
         {
-          name: "阴间换脸游戏",
+          name: "违和换脸小游戏",
           index: "/ChangeFace",
+        },
+        {
+          name: "流水线化妆工厂",
+          index: "/Makeup",
         },
       ],
     };

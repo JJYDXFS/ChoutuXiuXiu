@@ -5,7 +5,7 @@
       <router-view />
     </el-main>
     <el-footer>
-      
+    
     </el-footer>
   </el-container>
 </template>
@@ -25,3 +25,10 @@ export default defineComponent({
   }
 });
 </script>
+
+<style>
+body{
+  background: url("/img/bg.png");
+  height: 100%;
+}
+</style>
