@@ -1,10 +1,10 @@
 <template>
   <div>
     <div>
-      <p class="title my-font">媒体大数据实践</p>
+      <p class="title my-font">丑图秀秀</p>
       <p class="subtitle my-font">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;—— 多媒体内容理解部分</p>
       <div class="content">
-        <p style="font-size:20px"><b>内容一览</b></p>
+        <p style="font-size:20px"><b>功能一览</b></p>
         <p><b>人脸定位：</b>提供基础人脸定位功能</p>
         <p><b>人脸匹配：</b>匹配影视剧《The Crown（王冠）》中的人物角色</p>
 
