@@ -20,6 +20,7 @@
       :action = "action"
       :on-success = "Success"
       :on-error = "Error"
+      :on-progress = "Progress"
       list-type = "picture"
       limit = 1
     >
@@ -33,7 +34,7 @@
     </el-upload>
   </div>
   <div class="right">
-    <h1>结果</h1>
+    <h1>{{status}}</h1>
     <ul v-for="i in resultList">
     <li>
       <img :src="i" style="width:55%"/>
@@ -65,16 +66,20 @@ export default {
         { text: '西域牛仔帽', value: 'nzm' },
         { text: '毕业学士帽', value: 'xsm' }
         ],
+      status: "戴帽子准备"
     };
   },
   methods: {
       Success(res, file, fileList){
-        // console.log(res);
         this.resultList = res['result_list'] ;
+        this.status = "戴好了！";
       },
       Error(err, file, fileList){
         this.resultList = [];
-        alert("识别失败！");
+        alert("没戴上！");
+      },
+      Progress(event, file, fileList){
+            this.status = "戴帽子中...";
       },
       getHatPath(){
           return "/hat/"+this.selected+".png"
@@ -89,7 +94,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 @import url("//unpkg.com/element-plus/lib/theme-chalk/index.css");
 
 ul{
@@ -121,7 +126,7 @@ ul{
   }
 .right {
     float: left;
-    width: 40%;
+    width: 36%;
 }
 
 .select-body{

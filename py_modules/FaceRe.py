@@ -25,7 +25,7 @@ def myFaceRe(BASE_DIR, imageData, index, timestamp, save_path):
     face_locations = face_recognition.face_locations(unknown_img)
     face_encodings = face_recognition.face_encodings(unknown_img, face_locations)
     # 导入人脸数据
-    name_list = ['Queen Elizabeth II','Prince Charles','Princess Anne','Princess Diana','Lady Thatcher','Earl of Snowdon','Princess Margaret','Harold Wilson','Duke of Edinburgh','IU','song wei']
+    name_list = ['Queen Elizabeth II','Prince Charles','Princess Anne','Princess Diana','Lady Thatcher','Earl of Snowdon','Princess Margaret','Harold Wilson','Duke of Edinburgh','IU','song wei','The Queen Mother','King George V']
     known_face_encodings = np.load(BASE_DIR+'\\data\\face_encoding.npy')
 
     face_names = []

@@ -44,7 +44,7 @@
 <el-dialog v-model="dialogVisible">
   <img style="width:40%" :src="dialogImageUrl" alt="">
 </el-dialog>
-<el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">点击换脸</el-button>
+<el-button style="margin-left: 10px; margin-top: 20px" size="normal" type="success" @click="submitUpload">点击换脸</el-button>
 <div>
     <h1>{{status}}</h1>
     <ul v-for="i in resultList">
@@ -126,3 +126,9 @@ export default defineComponent({
     }
 })
 </script>
+
+<style scoped>
+ul{
+  list-style: none;
+}
+</style>

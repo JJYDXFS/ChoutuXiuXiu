@@ -7,11 +7,12 @@
     :action = "action"
     :on-success = "Success"
     :on-error = "Error"
+    :on-progress = "Progress"
     list-type = "picture"
     limit = 1
   >
     <i class="el-icon-upload"></i>
-    <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+    <div class="el-upload__text">将图片拖到此处，或<em>点击上传</em></div>
     <template #tip>
       <div class="el-upload__tip">
         只能上传 jpg 文件，且不超过 500KB
@@ -20,7 +21,7 @@
   </el-upload>
   </div>
   <div class="right">
-    <h1>匹配结果</h1>
+    <h1>{{status}}</h1>
     <ul v-for="i in resultList">
     <li>
       <img :src="i" style="width:60%"/>
@@ -42,22 +43,28 @@ export default {
         'Access-Control-Allow-Origin': '*',
       },
       action:"http://localhost:5000/api/get_face_recognition",
-      resultList:[]
+      resultList:[],
+      status: "等待匹配"
     };
   },
   methods: {
       Success(res, file, fileList){
-        // console.log(res);
         this.resultList = res['result_list'] ;
+        this.status = "匹配结果"
       },
       Error(err, file, fileList){
         this.resultList = [];
         alert("识别失败！");
-      }
+        this.status = "匹配失败";
+      },
+      Progress(event, file, fileList){
+        this.status = "匹配中...";
+      },
 }
 }
 
 </script>
+
 <style scoped>
 @import url("//unpkg.com/element-plus/lib/theme-chalk/index.css");
 

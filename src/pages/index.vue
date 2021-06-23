@@ -33,7 +33,7 @@ export default defineComponent({
 })
 </script>
 
-<style>
+<style scoped>
 .title{
   padding-top: 20px;
   /* margin-top: 5%; */

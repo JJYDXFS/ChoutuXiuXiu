@@ -15,6 +15,7 @@ from py_modules.FaceLoc import myFaceLoc
 from py_modules.FaceRe import myFaceRe
 from py_modules.VideoFaceRe import myVideoFaceRe
 from py_modules.ChangeFace import myChangeFace
+from py_modules.Makeup import myMakeup
 
 app = Flask(__name__,static_url_path='/static/',template_folder='templates')
 app.config['CORS_HEADERS'] = 'Content-Type'
@@ -65,7 +66,6 @@ def wear_hat():
     hatType = request.form['type'] # 得到帽子类型
     file_path, timestamp = save_img_to_server(request.files['file']) # 存图
 
-    # 识别
     result = myWearHat(BASE_DIR, file_path, timestamp, hatType)
     return make_response(result)
 
@@ -75,24 +75,13 @@ def change_face():
     换脸服务
     '''
     global CHANGE_FACE_COUNT
-    global IMAGE_COUNT
-
-    #print("第"+str(IMAGE_COUNT)+"张图")
-
-    #IMAGE_COUNT=IMAGE_COUNT+1
 
     path = BASE_DIR + r'\\posts\\changeface\\'
-    # imgName = str(IMAGE_COUNT)+".jpg"
 
-    # IMAGE_COUNT=IMAGE_COUNT+1
     imgName = ("image0" if CHANGE_FACE_COUNT else "image1")+".jpg"
     request.files['file'].save(path + imgName)
 
-    # print("存了一个图")
-
     CHANGE_FACE_COUNT = not CHANGE_FACE_COUNT
-
-    # print(CHANGE_FACE_COUNT)
 
     if CHANGE_FACE_COUNT:
         timestamp = str(int(round(time.time() * 1000)))
@@ -100,6 +89,17 @@ def change_face():
         return make_response(result)
     else:
         return make_response(json.dumps({'result_list':[]},ensure_ascii=False))
+
+@app.route('/api/makeup', methods = ['POST'])
+def makeup():
+    '''
+    人脸化妆
+    '''
+    
+    file_path, timestamp = save_img_to_server(request.files['file']) # 存图
+
+    result = myMakeup(BASE_DIR, file_path, timestamp)
+    return make_response(result)
 
 # 主页
 @app.route('/')
@@ -138,8 +138,6 @@ def save_video_to_server(videoData):
 
     return (file_path, timestamp)
 
-
-# 处理函数
 # ---------------------------------------------------------------------------------
 
 

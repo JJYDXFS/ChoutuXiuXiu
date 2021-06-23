@@ -12,7 +12,7 @@
       limit = 1
     >
       <i class="el-icon-upload"></i>
-      <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+      <div class="el-upload__text">将视频拖到此处，或<em>点击上传</em></div>
       <template #tip>
         <div class="el-upload__tip">
           只能上传 mp4 文件，且不超过 5MB
@@ -65,38 +65,38 @@ export default defineComponent({
 })
 </script>
 
-<style>
+<style scoped>
 @import url("//unpkg.com/element-plus/lib/theme-chalk/index.css");
 
 ul{
   list-style: none;
 }
-  .el-col {
-    border-radius: 4px;
-  }
-  .bg-purple-dark {
-    background: #99a9bf00;
-  }
-  .bg-purple {
-    background: #d3dce600;
-  }
-  .bg-purple-light {
-    background: #e5e9f200;
-  }
-  .grid-content {
-    border-radius: 4px;
-    min-height: 36px;
-  }
-  .row-bg {
-    padding: 10px 0;
-    background-color: #f9fafc00;
+.el-col {
+  border-radius: 4px;
 }
-  .left{
-    float: left;
-    width: 50%;
-  }
-  .right {
-    float: left;
-    width: 40%;
-  }
+.bg-purple-dark {
+  background: #99a9bf00;
+}
+.bg-purple {
+  background: #d3dce600;
+}
+.bg-purple-light {
+  background: #e5e9f200;
+}
+.grid-content {
+  border-radius: 4px;
+  min-height: 36px;
+}
+.row-bg {
+  padding: 10px 0;
+  background-color: #f9fafc00;
+}
+.left{
+  float: left;
+  width: 50%;
+}
+.right {
+  float: left;
+  width: 40%;
+}
 </style>

@@ -11,6 +11,7 @@ def myChangeFace(BASE_DIR,timestamp):
     
     @param:
     BASE_DIR: 服务器存储文件全局路径
+    timestamp: 时间戳用于定义图片名
     
     @return:
     返回生成图片相对前端的路径
